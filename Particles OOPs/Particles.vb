@@ -3,16 +3,19 @@
     Public YCoord As Double
     Public Velocity As Double
     Public Bearing As Double
-    Public Size As Double
-    Public Mass As Integer
+    Public Size As Integer
+    Public Mass As Double
     Public Sub New()
         Form1.NumberofParticles += 1
 
-        Velocity = 1 'CInt(Math.Ceiling(Rnd() * 5))
+        Me.Velocity = 1 'CInt(Math.Ceiling(Rnd() * 5))
 
-        Bearing = Rnd() * (2 * Math.PI)
+        Me.Bearing = Rnd() * (2 * Math.PI)
 
-        YCoord = CInt(Math.Ceiling(Rnd() * (Form1.WindowWidth - Size)))
-        XCoord = CInt(Math.Ceiling(Rnd() * (Form1.WindowHeight - Size)))
+        Me.Size = 25
+
+        XCoord = CInt(Math.Ceiling(Rnd() * (Form1.WindowWidth - 220)))
+        YCoord = CInt(Math.Ceiling(Rnd() * (Form1.WindowHeight - 17)))
+        Form1.ParticleArray.Add(Me)
     End Sub
 End Class
