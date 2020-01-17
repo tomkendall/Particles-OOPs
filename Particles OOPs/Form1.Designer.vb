@@ -22,17 +22,38 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.AddParticleButton = New System.Windows.Forms.Button()
         Me.SuspendLayout()
+        '
+        'Timer1
+        '
+        Me.Timer1.Enabled = True
+        Me.Timer1.Interval = 1
+        '
+        'AddParticleButton
+        '
+        Me.AddParticleButton.Location = New System.Drawing.Point(34, 353)
+        Me.AddParticleButton.Name = "AddParticleButton"
+        Me.AddParticleButton.Size = New System.Drawing.Size(118, 69)
+        Me.AddParticleButton.TabIndex = 0
+        Me.AddParticleButton.Text = "Add Particle"
+        Me.AddParticleButton.UseVisualStyleBackColor = True
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.AddParticleButton)
+        Me.DoubleBuffered = True
         Me.Name = "Form1"
         Me.Text = "Form1"
         Me.ResumeLayout(False)
 
     End Sub
 
+    Friend WithEvents Timer1 As Timer
+    Friend WithEvents AddParticleButton As Button
 End Class
