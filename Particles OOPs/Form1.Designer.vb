@@ -34,6 +34,7 @@ Partial Class Form1
         '
         'AddParticleButton
         '
+        Me.AddParticleButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.AddParticleButton.Location = New System.Drawing.Point(34, 353)
         Me.AddParticleButton.Name = "AddParticleButton"
         Me.AddParticleButton.Size = New System.Drawing.Size(118, 69)
