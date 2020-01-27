@@ -8,6 +8,8 @@
     Public Size As Integer
     Public Mass As Double
     Public Sub New()
+        Randomize()
+
         'Increases the number of particles by 1
         Form1.NumberofParticles += 1
         'Gives the new particle a random velocity between 1 and 5

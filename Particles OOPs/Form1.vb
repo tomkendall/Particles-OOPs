@@ -26,9 +26,28 @@
         e.Graphics.DrawRectangle(Pens.Black, 0, 0, WindowWidth, WindowHeight)
         'loops through each particle object
         For Each Particle In ParticleArray
+            Dim ParticleVector() As Double = {(Math.Cos(Particle.Bearing) * Particle.Velocity), (Math.Sin(Particle.Bearing) * Particle.Velocity)}
+
             'If the X and Y coordinates of the particle are within the bounds of the simulation space
             If Particle.XCoord < (WindowWidth - Particle.Size) And (Particle.XCoord > 0) And Particle.YCoord < (WindowHeight - Particle.Size) And Particle.YCoord > 0 Then
-
+                'Sets the new x and y coordinates based on velocity and bearing
+                Particle.XCoord += Math.Cos(Particle.Bearing) * Particle.Velocity
+                Particle.YCoord += Math.Sin(Particle.Bearing) * Particle.Velocity
+                'Draws the particle based on the new x and y coordinates and the size
+                e.Graphics.FillEllipse(Brushes.Black, Convert.ToInt32(Particle.XCoord), Convert.ToInt32(Particle.YCoord), Particle.Size, Particle.Size)
+                'Draws text displaying the angle of the particle, with 0 degrees pointing to the right
+                e.Graphics.DrawString(Math.Round((Particle.Bearing * (180 / Math.PI)), 1, MidpointRounding.AwayFromZero).ToString + "°", New Font("Tahoma", 7), Brushes.Red, New Point((Particle.XCoord + (Particle.Size / 2) - 9), (Particle.YCoord + (Particle.Size + 20))))
+            ElseIf Particle.XCoord < (WindowWidth - Particle.Size) And (Particle.XCoord > 0) Then
+                Particle.Bearing = (Math.PI) - Particle.Bearing
+                'Sets the new x and y coordinates based on velocity and bearing
+                Particle.XCoord += Math.Cos(Particle.Bearing) * Particle.Velocity
+                Particle.YCoord += Math.Sin(Particle.Bearing) * Particle.Velocity
+                'Draws the particle based on the new x and y coordinates and the size
+                e.Graphics.FillEllipse(Brushes.Black, Convert.ToInt32(Particle.XCoord), Convert.ToInt32(Particle.YCoord), Particle.Size, Particle.Size)
+                'Draws text displaying the angle of the particle, with 0 degrees pointing to the right
+                e.Graphics.DrawString(Math.Round((Particle.Bearing * (180 / Math.PI)), 1, MidpointRounding.AwayFromZero).ToString + "°", New Font("Tahoma", 7), Brushes.Red, New Point((Particle.XCoord + (Particle.Size / 2) - 9), (Particle.YCoord + (Particle.Size + 20))))
+            ElseIf Particle.YCoord < (WindowHeight - Particle.Size) And Particle.YCoord > 0 Then
+                Particle.Bearing = ((2 * Math.PI) - Particle.Bearing)
                 'Sets the new x and y coordinates based on velocity and bearing
                 Particle.XCoord += Math.Cos(Particle.Bearing) * Particle.Velocity
                 Particle.YCoord += Math.Sin(Particle.Bearing) * Particle.Velocity
@@ -44,4 +63,7 @@
         'Initialises a new particle object
         Particle = New Particles
     End Sub
+
+
+
 End Class
