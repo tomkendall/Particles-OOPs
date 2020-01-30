@@ -61,19 +61,19 @@
     End Sub
 
     Private Function ReflectVector(CurrentVector As Integer, XVector As Double, YVector As Double, XNormal As Double, YNormal As Double)
-        If Particle.Bearing > 0 And Particle.Bearing < (Math.PI / 2) Then
-            Particle.Bearing += (Math.PI / 2)
-        ElseIf Particle.Bearing > (Math.PI / 2) And Particle.Bearing < Math.PI Then
-        ElseIf Particle.Bearing > Math.PI And Particle.Bearing < ((2 * Math.PI) - (Math.PI / 2)) Then
-        ElseIf Particle.Bearing > ((2 * Math.PI) - (Math.PI / 2)) And Particle.Bearing < 0 Then
-            Console.WriteLine((Particle.Bearing * (180 / Math.PI)).ToString)
-        End If
+        'If Particle.Bearing > 0 And Particle.Bearing < (Math.PI / 2) Then
+        '    Particle.Bearing += (Math.PI / 2)
+        'ElseIf Particle.Bearing > (Math.PI / 2) And Particle.Bearing < Math.PI Then
+        'ElseIf Particle.Bearing > Math.PI And Particle.Bearing < ((2 * Math.PI) - (Math.PI / 2)) Then
+        'ElseIf Particle.Bearing > ((2 * Math.PI) - (Math.PI / 2)) And Particle.Bearing < 0 Then
+        '    Console.WriteLine((Particle.Bearing * (180 / Math.PI)).ToString)
+        'End If
 
         If CurrentVector = 0 Then
             Particle.Bearing = Math.Acos((XVector - (2 * ((XVector * XNormal) + (YVector * YNormal)) * XNormal)) / Particle.Velocity)
             Return XVector - (2 * ((XVector * XNormal) + (YVector * YNormal)) * XNormal)
         Else
-            Particle.Bearing = Math.Acos((XVector - (2 * ((XVector * XNormal) + (YVector * YNormal)) * XNormal)) / Particle.Velocity)
+            Particle.Bearing = Math.Asin((YVector - (2 * ((XVector * XVector) + (YVector * YNormal)) * YNormal)) / Particle.Velocity)
             Return YVector - (2 * ((XVector * XVector) + (YVector * YNormal)) * YNormal)
         End If
     End Function
