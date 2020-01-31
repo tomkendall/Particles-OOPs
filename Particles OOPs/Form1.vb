@@ -31,8 +31,8 @@
             'If the X and Y coordinates of the particle are within the bounds of the simulation space
             If Particle.XCoord < (WindowWidth - Particle.Size) And (Particle.XCoord > 0) And Particle.YCoord < (WindowHeight - Particle.Size) And Particle.YCoord > 0 Then
                 'Sets the new x and y coordinates based on velocity and bearing
-                Particle.XCoord += Math.Cos(Particle.Bearing) * Particle.Velocity
-                Particle.YCoord += Math.Sin(Particle.Bearing) * Particle.Velocity
+                Particle.XCoord += XVector
+                Particle.YCoord += YVector
                 'Draws the particle based on the new x and y coordinates and the size
                 e.Graphics.FillEllipse(Brushes.Black, Convert.ToInt32(Particle.XCoord), Convert.ToInt32(Particle.YCoord), Particle.Size, Particle.Size)
                 'Draws text displaying the angle of the particle, with 0 degrees pointing to the right
@@ -70,10 +70,10 @@
         'End If
 
         If CurrentVector = 0 Then
-            Particle.Bearing = Math.Acos((XVector - (2 * ((XVector * XNormal) + (YVector * YNormal)) * XNormal)) / Particle.Velocity)
+            Particle.Bearing = (Math.Acos(XVector - (2 * ((XVector * XNormal) + (YVector * YNormal)) * XNormal))) / Particle.Velocity
             Return XVector - (2 * ((XVector * XNormal) + (YVector * YNormal)) * XNormal)
         Else
-            Particle.Bearing = Math.Asin((YVector - (2 * ((XVector * XVector) + (YVector * YNormal)) * YNormal)) / Particle.Velocity)
+            Particle.Bearing = (Math.Asin(YVector - (2 * ((XVector * XVector) + (YVector * YNormal)) * YNormal))) / Particle.Velocity
             Return YVector - (2 * ((XVector * XVector) + (YVector * YNormal)) * YNormal)
         End If
     End Function
