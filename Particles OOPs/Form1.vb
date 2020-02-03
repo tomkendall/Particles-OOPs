@@ -38,20 +38,39 @@
                 'Draws text displaying the angle of the particle, with 0 degrees pointing to the right
                 e.Graphics.DrawString(Math.Round((Particle.Bearing * (180 / Math.PI)), 1, MidpointRounding.AwayFromZero).ToString + "°", New Font("Tahoma", 7), Brushes.Red, New Point((Particle.XCoord + (Particle.Size / 2) - 9), (Particle.YCoord + (Particle.Size + 20))))
             ElseIf Particle.XCoord < (WindowWidth - Particle.Size) And (Particle.XCoord > 0) Then
-                Particle.XCoord += ReflectVector(0, XVector, YVector, -1, 0)
-                Particle.YCoord += ReflectVector(1, XVector, YVector, -1, 0)
+                'Particle.Bearing = (2 * Math.PI) - Particle.Bearing
+
+                'Particle.XCoord += Math.Cos(Particle.Bearing) * Particle.Velocity
+                'Particle.YCoord += Math.Sin(Particle.Bearing) * Particle.Velocity
+
+                If Particle.YCoord > 0 Then 'If bouncing off top wall
+                    'Use top wall vector
+                    Particle.XCoord += ReflectVector(0, XVector, YVector, 0, 1)
+                    Particle.YCoord += ReflectVector(1, XVector, YVector, 0, 1)
+                ElseIf Particle.YCoord < (WindowHeight - Particle.Size) Then 'If bouncing off bottom wall
+                    'Use bottom wall vector
+                    Particle.XCoord += ReflectVector(0, XVector, YVector, 0, -1)
+                    Particle.YCoord += ReflectVector(1, XVector, YVector, 0, -1)
+                End If
                 'Draws the particle based on the new x and y coordinates and the size
                 e.Graphics.FillEllipse(Brushes.Black, Convert.ToInt32(Particle.XCoord), Convert.ToInt32(Particle.YCoord), Particle.Size, Particle.Size)
                 'Draws text displaying the angle of the particle, with 0 degrees pointing to the right
                 e.Graphics.DrawString(Math.Round((Particle.Bearing * (180 / Math.PI)), 1, MidpointRounding.AwayFromZero).ToString + "°", New Font("Tahoma", 7), Brushes.Red, New Point((Particle.XCoord + (Particle.Size / 2) - 9), (Particle.YCoord + (Particle.Size + 20))))
             ElseIf Particle.YCoord < (WindowHeight - Particle.Size) And Particle.YCoord > 0 Then
-                Particle.XCoord += ReflectVector(0, XVector, YVector, -1, 0)
-                Particle.YCoord += ReflectVector(1, XVector, YVector, -1, 0)
+                If Particle.XCoord > 0 Then 'If bouncing off left wall
+                    'Use left wall vector
+                    Particle.XCoord += ReflectVector(0, XVector, YVector, 1, 0)
+                    Particle.YCoord += ReflectVector(1, XVector, YVector, 1, 0)
+                ElseIf Particle.XCoord < (WindowWidth - Particle.Size) Then 'If bouncing off right wall
+                    'Use right wall vector
+                    Particle.XCoord += ReflectVector(0, XVector, YVector, -1, 0)
+                    Particle.YCoord += ReflectVector(1, XVector, YVector, -1, 0)
+                End If
                 'Draws the particle based on the new x and y coordinates and the size
                 e.Graphics.FillEllipse(Brushes.Black, Convert.ToInt32(Particle.XCoord), Convert.ToInt32(Particle.YCoord), Particle.Size, Particle.Size)
-                'Draws text displaying the angle of the particle, with 0 degrees pointing to the right
-                e.Graphics.DrawString(Math.Round((Particle.Bearing * (180 / Math.PI)), 1, MidpointRounding.AwayFromZero).ToString + "°", New Font("Tahoma", 7), Brushes.Red, New Point((Particle.XCoord + (Particle.Size / 2) - 9), (Particle.YCoord + (Particle.Size + 20))))
-            End If
+                    'Draws text displaying the angle of the particle, with 0 degrees pointing to the right
+                    e.Graphics.DrawString(Math.Round((Particle.Bearing * (180 / Math.PI)), 1, MidpointRounding.AwayFromZero).ToString + "°", New Font("Tahoma", 7), Brushes.Red, New Point((Particle.XCoord + (Particle.Size / 2) - 9), (Particle.YCoord + (Particle.Size + 20))))
+                End If
         Next
     End Sub
 
@@ -61,19 +80,13 @@
     End Sub
 
     Private Function ReflectVector(CurrentVector As Integer, XVector As Double, YVector As Double, XNormal As Double, YNormal As Double)
-        'If Particle.Bearing > 0 And Particle.Bearing < (Math.PI / 2) Then
-        '    Particle.Bearing += (Math.PI / 2)
-        'ElseIf Particle.Bearing > (Math.PI / 2) And Particle.Bearing < Math.PI Then
-        'ElseIf Particle.Bearing > Math.PI And Particle.Bearing < ((2 * Math.PI) - (Math.PI / 2)) Then
-        'ElseIf Particle.Bearing > ((2 * Math.PI) - (Math.PI / 2)) And Particle.Bearing < 0 Then
-        '    Console.WriteLine((Particle.Bearing * (180 / Math.PI)).ToString)
-        'End If
+
 
         If CurrentVector = 0 Then
             Particle.Bearing = (Math.Acos(XVector - (2 * ((XVector * XNormal) + (YVector * YNormal)) * XNormal))) / Particle.Velocity
             Return XVector - (2 * ((XVector * XNormal) + (YVector * YNormal)) * XNormal)
         Else
-            Particle.Bearing = (Math.Asin(YVector - (2 * ((XVector * XVector) + (YVector * YNormal)) * YNormal))) / Particle.Velocity
+            'Particle.Bearing = (Math.Asin(YVector - (2 * ((XVector * XNormal) + (YVector * YNormal)) * YNormal))) / Particle.Velocity
             Return YVector - (2 * ((XVector * XVector) + (YVector * YNormal)) * YNormal)
         End If
     End Function
