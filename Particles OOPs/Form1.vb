@@ -28,6 +28,7 @@
         For Each Particle In ParticleArray
             Dim XVector As Double = Math.Cos(Particle.Bearing) * Particle.Velocity
             Dim YVector As Double = Math.Sin(Particle.Bearing) * Particle.Velocity
+            Console.WriteLine(YVector.ToString)
             'If the X and Y coordinates of the particle are within the bounds of the simulation space
             If Particle.XCoord < (WindowWidth - Particle.Size) And (Particle.XCoord > 0) And Particle.YCoord < (WindowHeight - Particle.Size) And Particle.YCoord > 0 Then
                 'Sets the new x and y coordinates based on velocity and bearing
@@ -63,8 +64,9 @@
                     Particle.YCoord += ReflectVector(1, XVector, YVector, 1, 0)
                 ElseIf Particle.XCoord < (WindowWidth - Particle.Size) Then 'If bouncing off right wall
                     'Use right wall vector
-                    Particle.XCoord += ReflectVector(0, XVector, YVector, -1, 0)
-                    Particle.YCoord += ReflectVector(1, XVector, YVector, -1, 0)
+                    Particle.XCoord += ReflectVector(0, XVector, YVector, 1, 0)
+                    Particle.YCoord += ReflectVector(1, XVector, YVector, 1, 0)
+
                 End If
                 'Draws the particle based on the new x and y coordinates and the size
                 e.Graphics.FillEllipse(Brushes.Black, Convert.ToInt32(Particle.XCoord), Convert.ToInt32(Particle.YCoord), Particle.Size, Particle.Size)
@@ -83,11 +85,13 @@
 
 
         If CurrentVector = 0 Then
-            Particle.Bearing = (Math.Acos(XVector - (2 * ((XVector * XNormal) + (YVector * YNormal)) * XNormal))) / Particle.Velocity
-            Return XVector - (2 * ((XVector * XNormal) + (YVector * YNormal)) * XNormal)
+            Dim newvector As Double = XVector - (2 * ((XVector * XNormal) + (YVector * YNormal)) * XNormal)
+            Particle.Bearing = (Math.Acos(newvector / Particle.Velocity))
+            Return newvector
         Else
-            'Particle.Bearing = (Math.Asin(YVector - (2 * ((XVector * XNormal) + (YVector * YNormal)) * YNormal))) / Particle.Velocity
-            Return YVector - (2 * ((XVector * XVector) + (YVector * YNormal)) * YNormal)
+            Dim newvector As Double = YVector - (2 * ((XVector * XVector) + (YVector * YNormal)) * YNormal)
+            Particle.Bearing = (Math.Asin(newvector / Particle.Velocity))
+            Return newvector
         End If
     End Function
 
