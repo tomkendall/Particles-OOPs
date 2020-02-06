@@ -90,7 +90,7 @@
             Return newvector
         Else
             Dim newvector As Double = YVector - (2 * ((XVector * XVector) + (YVector * YNormal)) * YNormal)
-            Particle.Bearing = (Math.Asin(newvector / Particle.Velocity))
+            'Particle.Bearing = (Math.Asin(newvector / Particle.Velocity))
             Return newvector
         End If
     End Function
