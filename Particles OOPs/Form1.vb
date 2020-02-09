@@ -26,52 +26,56 @@
         e.Graphics.DrawRectangle(Pens.Black, 0, 0, WindowWidth, WindowHeight)
         'loops through each particle object
         For Each Particle In ParticleArray
+            'Initialises the current vector of the particle
             Dim XVector As Double = Math.Cos(Particle.Bearing) * Particle.Velocity
             Dim YVector As Double = Math.Sin(Particle.Bearing) * Particle.Velocity
+            'Initialises the vector of the particle after the collision
             Dim NewXVector As Double
             Dim NewYVector As Double
-            Console.WriteLine(YVector.ToString)
             'If the X and Y coordinates of the particle are within the bounds of the simulation space
             If Particle.XCoord < (WindowWidth - Particle.Size) And (Particle.XCoord > 0) And Particle.YCoord < (WindowHeight - Particle.Size) And Particle.YCoord > 0 Then
                 'Sets the new x and y coordinates based on velocity and bearing
                 Particle.XCoord += XVector
                 Particle.YCoord += YVector
             Else
+                'Otherwise if bouncing off the top/bottom wall
                 If Particle.XCoord < (WindowWidth - Particle.Size) And (Particle.XCoord > 0) Then
                     If Particle.YCoord > 0 Then 'If bouncing off bottom wall
                         'Use bottom wall vector
                         NewXVector += ReflectVector(0, XVector, YVector, 0, 1)
                         NewYVector += ReflectVector(1, XVector, YVector, 0, 1)
-                        Console.WriteLine()
                     ElseIf Particle.YCoord < (WindowHeight - Particle.Size) Then 'If bouncing off top wall
                         'Use top wall vector
-                        NewXVector += ReflectVector(0, XVector, YVector, 0, 1)
-                        NewYVector += ReflectVector(1, XVector, YVector, 0, 1)
-                        Console.WriteLine()
+                        NewXVector += ReflectVector(0, XVector, YVector, 0, -1)
+                        NewYVector += ReflectVector(1, XVector, YVector, 0, -1)
                     End If
+                    'Otherwise if bouncing off the left/right wall
                 ElseIf Particle.YCoord < (WindowHeight - Particle.Size) And Particle.YCoord > 0 Then
                     If Particle.XCoord > 0 Then 'If bouncing off right wall
                         'Use right wall vector
-                        NewXVector += ReflectVector(0, XVector, YVector, 1, 0)
-                        NewYVector += ReflectVector(1, XVector, YVector, 1, 0)
+                        NewXVector += ReflectVector(0, XVector, YVector, -1, 0)
+                        NewYVector += ReflectVector(1, XVector, YVector, -1, 0)
                     ElseIf Particle.XCoord < (WindowWidth - Particle.Size) Then 'If bouncing off left wall
                         'Use left wall vector
                         NewXVector += ReflectVector(0, XVector, YVector, 1, 0)
                         NewYVector += ReflectVector(1, XVector, YVector, 1, 0)
                     End If
                 End If
+                'Initialises the angle between the X and Y Vector
                 Dim Angle As Double = Math.Atan(Math.Abs(NewXVector) / Math.Abs(NewYVector))
 
-                If NewXVector > 0 And NewYVector < 0 Then
+                'Finds the new bearing of the Particle dependant on the quadrant
+                If NewXVector > 0 And NewYVector < 0 Then 'If X is positive and Y is negative
                     Particle.Bearing = (2 * Math.PI) - ((Math.PI / 2) - Angle)
-                ElseIf NewXVector < 0 And NewYVector < 0 Then
+                ElseIf NewXVector < 0 And NewYVector < 0 Then 'If X is negative and Y is negative
                     Particle.Bearing = (2 * Math.PI) - ((Math.PI / 2) + Angle)
-                ElseIf NewXVector < 0 And NewYVector > 0 Then
+                ElseIf NewXVector < 0 And NewYVector > 0 Then 'If X is negative and Y is positive
                     Particle.Bearing = ((Math.PI / 2) + Angle)
-                ElseIf NewXVector > 0 And NewYVector > 0 Then
+                ElseIf NewXVector > 0 And NewYVector > 0 Then 'If X is positive and Y is positive
                     Particle.Bearing = ((Math.PI / 2) - Angle)
                 End If
 
+                'Sets the new x and y coordinates based on new velocity and bearing
                 Particle.XCoord += NewXVector
                 Particle.YCoord += NewYVector
 
@@ -81,7 +85,6 @@
             e.Graphics.FillEllipse(Brushes.Black, Convert.ToInt32(Particle.XCoord), Convert.ToInt32(Particle.YCoord), Particle.Size, Particle.Size)
             'Draws text displaying the angle of the particle, with 0 degrees pointing to the right
             e.Graphics.DrawString(Math.Round((Particle.Bearing * (180 / Math.PI)), 1, MidpointRounding.AwayFromZero).ToString + "°", New Font("Tahoma", 7), Brushes.Red, New Point((Particle.XCoord + (Particle.Size / 2) - 9), (Particle.YCoord + (Particle.Size + 20))))
-
         Next
 
 
