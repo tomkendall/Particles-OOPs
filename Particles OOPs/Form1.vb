@@ -42,10 +42,12 @@
                         'Use bottom wall vector
                         NewXVector += ReflectVector(0, XVector, YVector, 0, 1)
                         NewYVector += ReflectVector(1, XVector, YVector, 0, 1)
+                        Console.WriteLine()
                     ElseIf Particle.YCoord < (WindowHeight - Particle.Size) Then 'If bouncing off top wall
                         'Use top wall vector
                         NewXVector += ReflectVector(0, XVector, YVector, 0, 1)
                         NewYVector += ReflectVector(1, XVector, YVector, 0, 1)
+                        Console.WriteLine()
                     End If
                 ElseIf Particle.YCoord < (WindowHeight - Particle.Size) And Particle.YCoord > 0 Then
                     If Particle.XCoord > 0 Then 'If bouncing off right wall
@@ -95,11 +97,9 @@
 
         If CurrentVector = 0 Then
             Dim newvector As Double = XVector - (2 * ((XVector * XNormal) + (YVector * YNormal)) * XNormal)
-            'Particle.Bearing = (Math.Acos(newvector / Particle.Velocity))
             Return newvector
         Else
-            Dim newvector As Double = YVector - (2 * ((XVector * XVector) + (YVector * YNormal)) * YNormal)
-            'Particle.Bearing = (Math.Asin(newvector / Particle.Velocity))
+            Dim newvector As Double = YVector - (2 * ((XVector * XNormal) + (YVector * YNormal)) * YNormal)
             Return newvector
         End If
     End Function
