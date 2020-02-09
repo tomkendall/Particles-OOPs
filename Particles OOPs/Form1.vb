@@ -28,57 +28,61 @@
         For Each Particle In ParticleArray
             Dim XVector As Double = Math.Cos(Particle.Bearing) * Particle.Velocity
             Dim YVector As Double = Math.Sin(Particle.Bearing) * Particle.Velocity
+            Dim NewXVector As Double
+            Dim NewYVector As Double
             Console.WriteLine(YVector.ToString)
             'If the X and Y coordinates of the particle are within the bounds of the simulation space
             If Particle.XCoord < (WindowWidth - Particle.Size) And (Particle.XCoord > 0) And Particle.YCoord < (WindowHeight - Particle.Size) And Particle.YCoord > 0 Then
                 'Sets the new x and y coordinates based on velocity and bearing
                 Particle.XCoord += XVector
                 Particle.YCoord += YVector
-                'Draws the particle based on the new x and y coordinates and the size
-                e.Graphics.FillEllipse(Brushes.Black, Convert.ToInt32(Particle.XCoord), Convert.ToInt32(Particle.YCoord), Particle.Size, Particle.Size)
-                'Draws text displaying the angle of the particle, with 0 degrees pointing to the right
-                e.Graphics.DrawString(Math.Round((Particle.Bearing * (180 / Math.PI)), 1, MidpointRounding.AwayFromZero).ToString + "°", New Font("Tahoma", 7), Brushes.Red, New Point((Particle.XCoord + (Particle.Size / 2) - 9), (Particle.YCoord + (Particle.Size + 20))))
-            ElseIf Particle.XCoord < (WindowWidth - Particle.Size) And (Particle.XCoord > 0) Then
-                'Particle.Bearing = (2 * Math.PI) - Particle.Bearing
-
-                'Particle.XCoord += Math.Cos(Particle.Bearing) * Particle.Velocity
-                'Particle.YCoord += Math.Sin(Particle.Bearing) * Particle.Velocity
-
-                If Particle.YCoord > 0 Then 'If bouncing off bottom wall
-                    'Use bottom wall vector
-                    Particle.XCoord += ReflectVector(0, XVector, YVector, 0, 1)
-                    Particle.YCoord += ReflectVector(1, XVector, YVector, 0, 1)
-                ElseIf Particle.YCoord < (WindowHeight - Particle.Size) Then 'If bouncing off top wall
-                    'Use top wall vector
-                    Particle.XCoord += ReflectVector(0, XVector, YVector, 0, -1)
-                    Particle.YCoord += ReflectVector(1, XVector, YVector, 0, -1)
-                End If
-                'Draws the particle based on the new x and y coordinates and the size
-                e.Graphics.FillEllipse(Brushes.Black, Convert.ToInt32(Particle.XCoord), Convert.ToInt32(Particle.YCoord), Particle.Size, Particle.Size)
-                'Draws text displaying the angle of the particle, with 0 degrees pointing to the right
-                e.Graphics.DrawString(Math.Round((Particle.Bearing * (180 / Math.PI)), 1, MidpointRounding.AwayFromZero).ToString + "°", New Font("Tahoma", 7), Brushes.Red, New Point((Particle.XCoord + (Particle.Size / 2) - 9), (Particle.YCoord + (Particle.Size + 20))))
-            ElseIf Particle.YCoord < (WindowHeight - Particle.Size) And Particle.YCoord > 0 Then
-                If Particle.XCoord > 0 Then 'If bouncing off right wall
-                    'Use right wall vector
-                    Particle.XCoord += ReflectVector(0, XVector, YVector, 1, 0)
-                    Particle.YCoord += ReflectVector(1, XVector, YVector, 1, 0)
-                    If Particle.Bearing > (1.5 * Math.PI) And Particle.Bearing < (2 * Math.PI) Then
-                        Particle.Bearing += (Math.Asin(ReflectVector(1, XVector, YVector, 1, 0) / Particle.Velocity))
+            Else
+                If Particle.XCoord < (WindowWidth - Particle.Size) And (Particle.XCoord > 0) Then
+                    If Particle.YCoord > 0 Then 'If bouncing off bottom wall
+                        'Use bottom wall vector
+                        NewXVector += ReflectVector(0, XVector, YVector, 0, 1)
+                        NewYVector += ReflectVector(1, XVector, YVector, 0, 1)
+                    ElseIf Particle.YCoord < (WindowHeight - Particle.Size) Then 'If bouncing off top wall
+                        'Use top wall vector
+                        NewXVector += ReflectVector(0, XVector, YVector, 0, 1)
+                        NewYVector += ReflectVector(1, XVector, YVector, 0, 1)
                     End If
-            ElseIf Particle.XCoord < (WindowWidth - Particle.Size) Then 'If bouncing off left wall
-                    'Use left wall vector
-                    Particle.XCoord += ReflectVector(0, XVector, YVector, 1, 0)
-                    Particle.YCoord += ReflectVector(1, XVector, YVector, 1, 0)
-                    If Particle.Bearing > 0 And Particle.Bearing < Math.PI Then
-                        Particle.Bearing = (2 * Math.PI) + (Math.Asin(ReflectVector(1, XVector, YVector, 1, 0) / Particle.Velocity))
+                ElseIf Particle.YCoord < (WindowHeight - Particle.Size) And Particle.YCoord > 0 Then
+                    If Particle.XCoord > 0 Then 'If bouncing off right wall
+                        'Use right wall vector
+                        NewXVector += ReflectVector(0, XVector, YVector, 1, 0)
+                        NewYVector += ReflectVector(1, XVector, YVector, 1, 0)
+                    ElseIf Particle.XCoord < (WindowWidth - Particle.Size) Then 'If bouncing off left wall
+                        'Use left wall vector
+                        NewXVector += ReflectVector(0, XVector, YVector, 1, 0)
+                        NewYVector += ReflectVector(1, XVector, YVector, 1, 0)
                     End If
                 End If
-                'Draws the particle based on the new x and y coordinates and the size
-                e.Graphics.FillEllipse(Brushes.Black, Convert.ToInt32(Particle.XCoord), Convert.ToInt32(Particle.YCoord), Particle.Size, Particle.Size)
-                    'Draws text displaying the angle of the particle, with 0 degrees pointing to the right
-                    e.Graphics.DrawString(Math.Round((Particle.Bearing * (180 / Math.PI)), 1, MidpointRounding.AwayFromZero).ToString + "°", New Font("Tahoma", 7), Brushes.Red, New Point((Particle.XCoord + (Particle.Size / 2) - 9), (Particle.YCoord + (Particle.Size + 20))))
+                Dim Angle As Double = Math.Atan(Math.Abs(NewXVector) / Math.Abs(NewYVector))
+
+                If NewXVector > 0 And NewYVector < 0 Then
+                    Particle.Bearing = (2 * Math.PI) - ((Math.PI / 2) - Angle)
+                ElseIf NewXVector < 0 And NewYVector < 0 Then
+                    Particle.Bearing = (2 * Math.PI) - ((Math.PI / 2) + Angle)
+                ElseIf NewXVector < 0 And NewYVector > 0 Then
+                    Particle.Bearing = ((Math.PI / 2) + Angle)
+                ElseIf NewXVector > 0 And NewYVector > 0 Then
+                    Particle.Bearing = ((Math.PI / 2) - Angle)
                 End If
+
+                Particle.XCoord += NewXVector
+                Particle.YCoord += NewYVector
+
+            End If
+
+            'Draws the particle based on the new x and y coordinates and the size
+            e.Graphics.FillEllipse(Brushes.Black, Convert.ToInt32(Particle.XCoord), Convert.ToInt32(Particle.YCoord), Particle.Size, Particle.Size)
+            'Draws text displaying the angle of the particle, with 0 degrees pointing to the right
+            e.Graphics.DrawString(Math.Round((Particle.Bearing * (180 / Math.PI)), 1, MidpointRounding.AwayFromZero).ToString + "°", New Font("Tahoma", 7), Brushes.Red, New Point((Particle.XCoord + (Particle.Size / 2) - 9), (Particle.YCoord + (Particle.Size + 20))))
+
         Next
+
+
     End Sub
 
     Private Sub AddParticleButton_Click(sender As Object, e As EventArgs) Handles AddParticleButton.Click
