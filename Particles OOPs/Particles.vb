@@ -15,12 +15,12 @@
         'Gives the new particle a random velocity between 1 and 5
         Me.Velocity = 1 'CInt(Math.Ceiling(Rnd() * 5))
         'Gives the new particle a random bearing between 0 and 2PI
-        Me.Bearing = 2.5 'Rnd() * (2 * Math.PI)
+        Me.Bearing = 3.75 'Rnd() * (2 * Math.PI)
         'Gives the new particle a size based off its type
         Me.Size = 25
         'Gives the new particle random coordinates
-        XCoord = 50 'CInt(Math.Ceiling(Rnd() * (Form1.WindowWidth)))
-        YCoord = 150 'CInt(Math.Ceiling(Rnd() * (Form1.WindowHeight)))
+        Me.XCoord = (Form1.WindowWidth - 17) 'CInt(Math.Ceiling(Rnd() * (Form1.WindowWidth - 17)))
+        Me.YCoord = (Form1.WindowHeight - 220) 'CInt(Math.Ceiling(Rnd() * (Form1.WindowHeight - 220)))
         'Adds the new particle object
         Form1.ParticleArray.Add(Me)
     End Sub

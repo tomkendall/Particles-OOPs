@@ -41,10 +41,12 @@
                 'Otherwise if bouncing off the top/bottom wall
                 If Particle.XCoord < (WindowWidth - Particle.Size) And (Particle.XCoord > 0) Then
                     If Particle.YCoord > 0 Then 'If bouncing off bottom wall
+                        Particle.YCoord = (WindowWidth - Particle.Size)
                         'Use bottom wall vector
                         NewXVector += ReflectVector(0, XVector, YVector, 0, 1)
                         NewYVector += ReflectVector(1, XVector, YVector, 0, 1)
                     ElseIf Particle.YCoord < (WindowHeight - Particle.Size) Then 'If bouncing off top wall
+                        Particle.YCoord = 0
                         'Use top wall vector
                         NewXVector += ReflectVector(0, XVector, YVector, 0, -1)
                         NewYVector += ReflectVector(1, XVector, YVector, 0, -1)
@@ -52,15 +54,18 @@
                     'Otherwise if bouncing off the left/right wall
                 ElseIf Particle.YCoord < (WindowHeight - Particle.Size) And Particle.YCoord > 0 Then
                     If Particle.XCoord > 0 Then 'If bouncing off right wall
+                        Particle.XCoord = (WindowHeight - Particle.Size)
                         'Use right wall vector
                         NewXVector += ReflectVector(0, XVector, YVector, -1, 0)
                         NewYVector += ReflectVector(1, XVector, YVector, -1, 0)
                     ElseIf Particle.XCoord < (WindowWidth - Particle.Size) Then 'If bouncing off left wall
+                        Particle.XCoord = 0
                         'Use left wall vector
                         NewXVector += ReflectVector(0, XVector, YVector, 1, 0)
                         NewYVector += ReflectVector(1, XVector, YVector, 1, 0)
                     End If
                 End If
+
                 'Initialises the angle between the X and Y Vector
                 Dim Angle As Double = Math.Atan(Math.Abs(NewXVector) / Math.Abs(NewYVector))
 
@@ -73,6 +78,8 @@
                     Particle.Bearing = ((Math.PI / 2) + Angle)
                 ElseIf NewXVector > 0 And NewYVector > 0 Then 'If X is positive and Y is positive
                     Particle.Bearing = ((Math.PI / 2) - Angle)
+                Else 'Otherwise if direct collision
+                    Particle.Bearing += Math.PI
                 End If
 
                 'Sets the new x and y coordinates based on new velocity and bearing
@@ -96,7 +103,6 @@
     End Sub
 
     Private Function ReflectVector(CurrentVector As Integer, XVector As Double, YVector As Double, XNormal As Double, YNormal As Double)
-
 
         If CurrentVector = 0 Then
             Dim newvector As Double = XVector - (2 * ((XVector * XNormal) + (YVector * YNormal)) * XNormal)
