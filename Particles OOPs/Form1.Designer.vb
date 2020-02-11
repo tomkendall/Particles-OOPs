@@ -25,6 +25,7 @@ Partial Class Form1
         Me.components = New System.ComponentModel.Container()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.AddParticleButton = New System.Windows.Forms.Button()
+        Me.PauseButton = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Timer1
@@ -42,11 +43,22 @@ Partial Class Form1
         Me.AddParticleButton.Text = "Add Particle"
         Me.AddParticleButton.UseVisualStyleBackColor = True
         '
+        'PauseButton
+        '
+        Me.PauseButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.PauseButton.Location = New System.Drawing.Point(158, 353)
+        Me.PauseButton.Name = "PauseButton"
+        Me.PauseButton.Size = New System.Drawing.Size(118, 69)
+        Me.PauseButton.TabIndex = 1
+        Me.PauseButton.Text = "Pause"
+        Me.PauseButton.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.PauseButton)
         Me.Controls.Add(Me.AddParticleButton)
         Me.DoubleBuffered = True
         Me.Name = "Form1"
@@ -57,4 +69,5 @@ Partial Class Form1
 
     Friend WithEvents Timer1 As Timer
     Friend WithEvents AddParticleButton As Button
+    Friend WithEvents PauseButton As Button
 End Class

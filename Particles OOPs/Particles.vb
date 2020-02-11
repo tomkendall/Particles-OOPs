@@ -19,8 +19,8 @@
         'Gives the new particle a size based off its type
         Me.Size = 25
         'Gives the new particle random coordinates
-        Me.XCoord = (Form1.WindowWidth - 17) 'CInt(Math.Ceiling(Rnd() * (Form1.WindowWidth - 17)))
-        Me.YCoord = (Form1.WindowHeight - 220) 'CInt(Math.Ceiling(Rnd() * (Form1.WindowHeight - 220)))
+        Me.XCoord = 150 'CInt(Math.Ceiling(Rnd() * (Form1.WindowWidth - 17)))
+        Me.YCoord = 150 'CInt(Math.Ceiling(Rnd() * (Form1.WindowHeight - 220)))
         'Adds the new particle object
         Form1.ParticleArray.Add(Me)
     End Sub
