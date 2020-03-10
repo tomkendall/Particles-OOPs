@@ -26,6 +26,7 @@ Partial Class Form1
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.AddParticleButton = New System.Windows.Forms.Button()
         Me.PauseButton = New System.Windows.Forms.Button()
+        Me.CollisionsCheckbox = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'Timer1
@@ -53,21 +54,37 @@ Partial Class Form1
         Me.PauseButton.Text = "Pause"
         Me.PauseButton.UseVisualStyleBackColor = True
         '
+        'CollisionsCheckbox
+        '
+        Me.CollisionsCheckbox.AutoSize = True
+        Me.CollisionsCheckbox.Checked = True
+        Me.CollisionsCheckbox.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.CollisionsCheckbox.Location = New System.Drawing.Point(719, 405)
+        Me.CollisionsCheckbox.Name = "CollisionsCheckbox"
+        Me.CollisionsCheckbox.Size = New System.Drawing.Size(69, 17)
+        Me.CollisionsCheckbox.TabIndex = 2
+        Me.CollisionsCheckbox.Text = "Collisions"
+        Me.CollisionsCheckbox.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.Controls.Add(Me.CollisionsCheckbox)
         Me.Controls.Add(Me.PauseButton)
         Me.Controls.Add(Me.AddParticleButton)
         Me.DoubleBuffered = True
         Me.Name = "Form1"
-        Me.Text = "Form1"
+        Me.ShowIcon = False
+        Me.Text = "Particle Collision Simulator"
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 
     Friend WithEvents Timer1 As Timer
     Friend WithEvents AddParticleButton As Button
     Friend WithEvents PauseButton As Button
+    Friend WithEvents CollisionsCheckbox As CheckBox
 End Class
