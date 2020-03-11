@@ -93,11 +93,11 @@
 
         If CollisionsCheckbox.Checked = True And ParticleArray.Count > 1 Then 'Checks whether collisions are enabled and there are 2 particles to collide
             For i = 0 To ParticleArray.Count - 1 'Loops through each particle
-                For j = 1 To (ParticleArray.Count - i) 'Checks each particle against each other
-                    If (ParticleArray(i + j).XCoord - ParticleArray(i).XCoord) ^ 2 + (ParticleArray(i).YCoord - ParticleArray(i + j).YCoord) ^ 2 <= ((ParticleArray(i).Size / 2) + (ParticleArray(i + j).Size / 2)) ^ 2 Then
+                For j = (i + 1) To (ParticleArray.Count - 1) 'Checks each particle against each other
+                    If (ParticleArray(j).XCoord - ParticleArray(i).XCoord) ^ 2 + (ParticleArray(i).YCoord - ParticleArray(j).YCoord) ^ 2 <= ((ParticleArray(i).Size / 2) + (ParticleArray(j).Size / 2)) ^ 2 Then
                         'Finds the centre points of each particles instead of the top left corner (default)
                         Dim CentrePointParticleI() As Integer = {(ParticleArray(i).XCoord + (ParticleArray(i).Size / 2)), ParticleArray(i).YCoord + (ParticleArray(i).Size / 2)}
-                        Dim CentrePointParticleJ() As Integer = {(ParticleArray(i + j).XCoord + (ParticleArray(i + j).Size / 2)), ParticleArray(i + j).YCoord + (ParticleArray(i + j).Size / 2)}
+                        Dim CentrePointParticleJ() As Integer = {(ParticleArray(j).XCoord + (ParticleArray(j).Size / 2)), ParticleArray(j).YCoord + (ParticleArray(j).Size / 2)}
 
                         'Finds the point of collision between the two particles
                         Dim midpointX As Integer = ((CentrePointParticleI(0) + CentrePointParticleJ(0)) / 2)
@@ -123,10 +123,11 @@
                         'Draws psuedowall
                         e.Graphics.DrawPolygon(Pens.Red, CentrePoints)
 
-                        'Dim pwallbearing As Double = (((ParticleArray(i).Bearing * (180 / Math.PI)) * ParticleArray(i).Velocity) + ((ParticleArray(i + j).Bearing * (180 / Math.PI)) * ParticleArray(i + j).Velocity) / (ParticleArray(i + j).Velocity + ParticleArray(i).Velocity))
-                        Dim pwallbearing As Double = (((ParticleArray(i).Bearing) * ParticleArray(i).Velocity) + ((ParticleArray(i + j).Bearing) * ParticleArray(i + j).Velocity) / (ParticleArray(i + j).Velocity + ParticleArray(i).Velocity))
+                        'Dim pwallbearing As Double = (((ParticleArray(i).Bearing * (180 / Math.PI)) * ParticleArray(i).Velocity) + ((ParticleArray(j).Bearing * (180 / Math.PI)) * ParticleArray(j).Velocity) / (ParticleArray(j).Velocity + ParticleArray(i).Velocity))
+                        Dim pwallbearing As Double = (((ParticleArray(i).Bearing) * ParticleArray(i).Velocity) + ((ParticleArray(j).Bearing) * ParticleArray(j).Velocity) / (ParticleArray(j).Velocity + ParticleArray(i).Velocity))
 
-                        Console.WriteLine(pwallbearing)
+                        ParticleArray(i).Velocity = 0
+                        ParticleArray(j).Velocity = 0
                     End If
                 Next
             Next

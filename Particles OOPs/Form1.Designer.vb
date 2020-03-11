@@ -56,6 +56,7 @@ Partial Class Form1
         '
         'CollisionsCheckbox
         '
+        Me.CollisionsCheckbox.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.CollisionsCheckbox.AutoSize = True
         Me.CollisionsCheckbox.Checked = True
         Me.CollisionsCheckbox.CheckState = System.Windows.Forms.CheckState.Checked
