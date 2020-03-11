@@ -37,7 +37,7 @@ Partial Class Form1
         'AddParticleButton
         '
         Me.AddParticleButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.AddParticleButton.Location = New System.Drawing.Point(34, 353)
+        Me.AddParticleButton.Location = New System.Drawing.Point(34, 564)
         Me.AddParticleButton.Name = "AddParticleButton"
         Me.AddParticleButton.Size = New System.Drawing.Size(118, 69)
         Me.AddParticleButton.TabIndex = 0
@@ -47,7 +47,7 @@ Partial Class Form1
         'PauseButton
         '
         Me.PauseButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.PauseButton.Location = New System.Drawing.Point(158, 353)
+        Me.PauseButton.Location = New System.Drawing.Point(158, 564)
         Me.PauseButton.Name = "PauseButton"
         Me.PauseButton.Size = New System.Drawing.Size(118, 69)
         Me.PauseButton.TabIndex = 1
@@ -60,7 +60,7 @@ Partial Class Form1
         Me.CollisionsCheckbox.AutoSize = True
         Me.CollisionsCheckbox.Checked = True
         Me.CollisionsCheckbox.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.CollisionsCheckbox.Location = New System.Drawing.Point(719, 405)
+        Me.CollisionsCheckbox.Location = New System.Drawing.Point(603, 616)
         Me.CollisionsCheckbox.Name = "CollisionsCheckbox"
         Me.CollisionsCheckbox.Size = New System.Drawing.Size(69, 17)
         Me.CollisionsCheckbox.TabIndex = 2
@@ -71,7 +71,7 @@ Partial Class Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.ClientSize = New System.Drawing.Size(684, 661)
         Me.Controls.Add(Me.CollisionsCheckbox)
         Me.Controls.Add(Me.PauseButton)
         Me.Controls.Add(Me.AddParticleButton)

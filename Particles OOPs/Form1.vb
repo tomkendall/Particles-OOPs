@@ -94,7 +94,7 @@
         If CollisionsCheckbox.Checked = True And ParticleArray.Count > 1 Then 'Checks whether collisions are enabled and there are 2 particles to collide
             For i = 0 To ParticleArray.Count - 1 'Loops through each particle
                 For j = (i + 1) To (ParticleArray.Count - 1) 'Checks each particle against each other
-                    If (ParticleArray(j).XCoord - ParticleArray(i).XCoord) ^ 2 + (ParticleArray(i).YCoord - ParticleArray(j).YCoord) ^ 2 <= ((ParticleArray(i).Size / 2) + (ParticleArray(j).Size / 2)) ^ 2 Then
+                    If (ParticleArray(j).XCoord - ParticleArray(i).XCoord) ^ 2 + (ParticleArray(i).YCoord - ParticleArray(j).YCoord) ^ 2 <= ((ParticleArray(i).Size / 2) + (ParticleArray(j).Size / 2)) ^ 2 Then 'Checks whether the two particles are colliding
                         'Finds the centre points of each particles instead of the top left corner (default)
                         Dim CentrePointParticleI() As Integer = {(ParticleArray(i).XCoord + (ParticleArray(i).Size / 2)), ParticleArray(i).YCoord + (ParticleArray(i).Size / 2)}
                         Dim CentrePointParticleJ() As Integer = {(ParticleArray(j).XCoord + (ParticleArray(j).Size / 2)), ParticleArray(j).YCoord + (ParticleArray(j).Size / 2)}
@@ -126,8 +126,66 @@
                         'Dim pwallbearing As Double = (((ParticleArray(i).Bearing * (180 / Math.PI)) * ParticleArray(i).Velocity) + ((ParticleArray(j).Bearing * (180 / Math.PI)) * ParticleArray(j).Velocity) / (ParticleArray(j).Velocity + ParticleArray(i).Velocity))
                         Dim pwallbearing As Double = (((ParticleArray(i).Bearing) * ParticleArray(i).Velocity) + ((ParticleArray(j).Bearing) * ParticleArray(j).Velocity) / (ParticleArray(j).Velocity + ParticleArray(i).Velocity))
 
-                        ParticleArray(i).Velocity = 0
-                        ParticleArray(j).Velocity = 0
+                        Dim PWallXVector As Double = Math.Cos(pwallbearing)
+                        Dim PWallYVector As Double = Math.Sin(pwallbearing)
+
+                        'Initialises the current vector of the particle
+                        Dim XVectorI As Double = Math.Cos(ParticleArray(i).Bearing) * ParticleArray(i).Velocity
+                        Dim YVectorI As Double = Math.Sin(ParticleArray(i).Bearing) * ParticleArray(i).Velocity
+                        'Initialises the current vector of the particle
+                        Dim XVectorJ As Double = Math.Cos(ParticleArray(j).Bearing) * ParticleArray(j).Velocity
+                        Dim YVectorJ As Double = Math.Sin(ParticleArray(j).Bearing) * ParticleArray(j).Velocity
+
+                        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+                        Dim NewXVectorI As Double = XVectorI - (2 * ((XVectorI * PWallXVector) + (YVectorI * PWallYVector)) * PWallXVector)
+                        Dim NewYVectorI As Double = YVectorI - (2 * ((XVectorI * PWallXVector) + (YVectorI * PWallYVector)) * PWallYVector)
+
+                        'Initialises the angle between the X and Y Vector
+                        Dim IAngle As Double = Math.Atan(Math.Abs(NewXVectorI) / Math.Abs(NewYVectorI))
+
+                        'Finds the new bearing of the Particle dependant on the quadrant
+                        If NewXVectorI > 0 And NewYVectorI < 0 Then 'If X is positive and Y is negative
+                            ParticleArray(i).Bearing = (2 * Math.PI) - ((Math.PI / 2) - IAngle)
+                        ElseIf NewXVectorI < 0 And NewYVectorI < 0 Then 'If X is negative and Y is negative
+                            ParticleArray(i).Bearing = (2 * Math.PI) - ((Math.PI / 2) + IAngle)
+                        ElseIf NewXVectorI < 0 And NewYVectorI > 0 Then 'If X is negative and Y is positive
+                            ParticleArray(i).Bearing = ((Math.PI / 2) + IAngle)
+                        ElseIf NewXVectorI > 0 And NewYVectorI > 0 Then 'If X is positive and Y is positive
+                            ParticleArray(i).Bearing = ((Math.PI / 2) - IAngle)
+                        Else 'If it is 
+                            ParticleArray(i).Bearing += Math.PI
+                        End If
+
+                        ParticleArray(i).XCoord += NewXVectorI
+                        ParticleArray(i).YCoord += NewYVectorI
+
+                        ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+                        Dim NewXVectorJ As Double = XVectorJ - (2 * ((XVectorJ * PWallXVector) + (YVectorJ * PWallYVector)) * PWallXVector)
+                        Dim NewYVectorJ As Double = YVectorJ - (2 * ((XVectorJ * PWallXVector) + (YVectorJ * PWallYVector)) * PWallYVector)
+
+                        'Initialises the angle between the X and Y Vector
+                        Dim JAngle As Double = Math.Atan(Math.Abs(NewXVectorJ) / Math.Abs(NewYVectorJ))
+
+                        'Finds the new bearing of the Particle dependant on the quadrant
+                        If NewXVectorJ > 0 And NewYVectorJ < 0 Then 'If X is positive and Y is negative
+                            ParticleArray(j).Bearing = (2 * Math.PI) - ((Math.PI / 2) - JAngle)
+                        ElseIf NewXVectorJ < 0 And NewYVectorJ < 0 Then 'If X is negative and Y is negative
+                            ParticleArray(j).Bearing = (2 * Math.PI) - ((Math.PI / 2) + JAngle)
+                        ElseIf NewXVectorJ < 0 And NewYVectorJ > 0 Then 'If X is negative and Y is positive
+                            ParticleArray(j).Bearing = ((Math.PI / 2) + JAngle)
+                        ElseIf NewXVectorJ > 0 And NewYVectorJ > 0 Then 'If X is positive and Y is positive
+                            ParticleArray(j).Bearing = ((Math.PI / 2) - JAngle)
+                        Else 'If it is 
+                            ParticleArray(j).Bearing += Math.PI
+                        End If
+
+                        ParticleArray(j).XCoord += NewXVectorJ
+                        ParticleArray(j).YCoord += NewYVectorJ
+
+                        'ParticleArray(i).Velocity = 0
+                        'ParticleArray(j).Velocity = 0
                     End If
                 Next
             Next
@@ -140,25 +198,31 @@
         Particle = New Particles
     End Sub
 
-    Private Function ReflectVector(CurrentVector As Integer, XVector As Double, YVector As Double, XNormal As Double, YNormal As Double)
+    'Private Function ReflectVector(CurrentVector As Integer, XVector As Double, YVector As Double, XNormal As Double, YNormal As Double)
 
-        If CurrentVector = 0 Then
-            Dim newvector As Double = XVector - (2 * ((XVector * XNormal) + (YVector * YNormal)) * XNormal)
-            Return newvector
-        Else
-            Dim newvector As Double = YVector - (2 * ((XVector * XNormal) + (YVector * YNormal)) * YNormal)
-            Return newvector
-        End If
 
-    End Function
+    '    If CurrentVector = 0 Then
+    '        Dim newvector As Double = XVector - (2 * ((XVector * XNormal) + (YVector * YNormal)) * XNormal)
+    '        Return newvector
+    '    Else
+    '        Dim newvector As Double = YVector - (2 * ((XVector * XNormal) + (YVector * YNormal)) * YNormal)
+    '        Return newvector
+    '    End If
+
+    'End Function
 
     Private Sub PauseButton_Click(sender As Object, e As EventArgs) Handles PauseButton.Click
 
+        'Pauses the timer and therefore the simulation when the button is pressed
         If Timer1.Enabled = True Then
+            'If the simulation is running, pause it
             Timer1.Enabled = False
+            'Change the text to 'resume'
             PauseButton.Text = "Resume"
         Else
+            'If the simulation is paused, run it
             Timer1.Enabled = True
+            'Change the text to 'pause'
             PauseButton.Text = "Pause"
         End If
 
