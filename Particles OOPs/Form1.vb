@@ -137,9 +137,11 @@
                         Dim YVectorJ As Double = Math.Sin(ParticleArray(j).Bearing) * ParticleArray(j).Velocity
 
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                        Dim PWallXPerpendicularI = PWallYVector
+                        Dim PWallYPerpendicularI = -PWallXVector
 
-                        Dim NewXVectorI As Double = XVectorI - (2 * ((XVectorI * PWallXVector) + (YVectorI * PWallYVector)) * PWallXVector)
-                        Dim NewYVectorI As Double = YVectorI - (2 * ((XVectorI * PWallXVector) + (YVectorI * PWallYVector)) * PWallYVector)
+                        Dim NewXVectorI As Double = XVectorI - (2 * ((XVectorI * PWallXPerpendicularI) + (YVectorI * PWallYPerpendicularI)) * PWallXPerpendicularI)
+                        Dim NewYVectorI As Double = YVectorI - (2 * ((XVectorI * PWallXPerpendicularI) + (YVectorI * PWallYPerpendicularI)) * PWallYPerpendicularI)
 
                         'Initialises the angle between the X and Y Vector
                         Dim IAngle As Double = Math.Atan(Math.Abs(NewXVectorI) / Math.Abs(NewYVectorI))
@@ -159,11 +161,19 @@
 
                         ParticleArray(i).XCoord += NewXVectorI
                         ParticleArray(i).YCoord += NewYVectorI
+                        ParticleArray(i).XCoord += NewXVectorI
+                        ParticleArray(i).YCoord += NewYVectorI
+                        ParticleArray(i).XCoord += NewXVectorI
+                        ParticleArray(i).YCoord += NewYVectorI
+                        ParticleArray(i).XCoord += NewXVectorI
+                        ParticleArray(i).YCoord += NewYVectorI
 
                         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                        Dim PWallXPerpendicularJ = -PWallYVector
+                        Dim PWallYPerpendicularJ = PWallXVector
 
-                        Dim NewXVectorJ As Double = XVectorJ - (2 * ((XVectorJ * PWallXVector) + (YVectorJ * PWallYVector)) * PWallXVector)
-                        Dim NewYVectorJ As Double = YVectorJ - (2 * ((XVectorJ * PWallXVector) + (YVectorJ * PWallYVector)) * PWallYVector)
+                        Dim NewXVectorJ As Double = XVectorJ - (2 * ((XVectorJ * PWallXPerpendicularJ) + (YVectorJ * PWallYPerpendicularJ)) * PWallXPerpendicularJ)
+                        Dim NewYVectorJ As Double = YVectorJ - (2 * ((XVectorJ * PWallXPerpendicularJ) + (YVectorJ * PWallYPerpendicularJ)) * PWallYPerpendicularJ)
 
                         'Initialises the angle between the X and Y Vector
                         Dim JAngle As Double = Math.Atan(Math.Abs(NewXVectorJ) / Math.Abs(NewYVectorJ))
@@ -183,9 +193,13 @@
 
                         ParticleArray(j).XCoord += NewXVectorJ
                         ParticleArray(j).YCoord += NewYVectorJ
+                        ParticleArray(j).XCoord += NewXVectorJ
+                        ParticleArray(j).YCoord += NewYVectorJ
+                        ParticleArray(j).XCoord += NewXVectorJ
+                        ParticleArray(j).YCoord += NewYVectorJ
+                        ParticleArray(j).XCoord += NewXVectorJ
+                        ParticleArray(j).YCoord += NewYVectorJ
 
-                        'ParticleArray(i).Velocity = 0
-                        'ParticleArray(j).Velocity = 0
                     End If
                 Next
             Next
