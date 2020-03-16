@@ -27,6 +27,7 @@ Partial Class Form1
         Me.AddParticleButton = New System.Windows.Forms.Button()
         Me.PauseButton = New System.Windows.Forms.Button()
         Me.CollisionsCheckbox = New System.Windows.Forms.CheckBox()
+        Me.FrameButton = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Timer1
@@ -67,11 +68,22 @@ Partial Class Form1
         Me.CollisionsCheckbox.Text = "Collisions"
         Me.CollisionsCheckbox.UseVisualStyleBackColor = True
         '
+        'FrameButton
+        '
+        Me.FrameButton.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.FrameButton.Location = New System.Drawing.Point(282, 564)
+        Me.FrameButton.Name = "FrameButton"
+        Me.FrameButton.Size = New System.Drawing.Size(118, 69)
+        Me.FrameButton.TabIndex = 3
+        Me.FrameButton.Text = "Advance by 1 Frame"
+        Me.FrameButton.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(684, 661)
+        Me.Controls.Add(Me.FrameButton)
         Me.Controls.Add(Me.CollisionsCheckbox)
         Me.Controls.Add(Me.PauseButton)
         Me.Controls.Add(Me.AddParticleButton)
@@ -88,4 +100,5 @@ Partial Class Form1
     Friend WithEvents AddParticleButton As Button
     Friend WithEvents PauseButton As Button
     Friend WithEvents CollisionsCheckbox As CheckBox
+    Friend WithEvents FrameButton As Button
 End Class

@@ -6,6 +6,7 @@
     Public NumberofParticles As Integer
     Public ParticleArray As New List(Of Particles)(100)
     Public Particle As Particles
+    Public counter As Integer = -1
 
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -16,7 +17,14 @@
         WindowWidth = Me.Width - 17
         WindowHeight = Me.Height - 220
         'Wipes the painted screen and calls Form1_Paint
-        Invalidate()
+        If counter > 0 Then
+            counter -= 1
+            Invalidate()
+        ElseIf counter = 0 Then
+            Timer1.Enabled = False
+        Else
+            Invalidate()
+        End If
     End Sub
 
     Private Sub Form1_Paint(sender As Object, e As PaintEventArgs) Handles Me.Paint
@@ -81,11 +89,11 @@
                 'Sets the new x and y coordinates based on new velocity and bearing
                 ParticleArray(i).XCoord += NewXVector
                 ParticleArray(i).YCoord += NewYVector
-
             End If
-
             'Draws the particle based on the new x and y coordinates and the size
             e.Graphics.FillEllipse(Brushes.Black, Convert.ToInt32(ParticleArray(i).XCoord), Convert.ToInt32(ParticleArray(i).YCoord), ParticleArray(i).Size, ParticleArray(i).Size)
+            'Drawn where the particle will go
+            e.Graphics.DrawLine(Pens.Red, Convert.ToInt32(ParticleArray(i).XCoord + (ParticleArray(i).Size / 2)), Convert.ToInt32(ParticleArray(i).YCoord + (ParticleArray(i).Size / 2)), Convert.ToInt32(ParticleArray(i).XCoord + (XVector * 30) + (ParticleArray(i).Size / 2)), Convert.ToInt32(ParticleArray(i).YCoord + (YVector * 30) + (ParticleArray(i).Size / 2)))
             'Draws text displaying the angle of the particle, with 0 degrees pointing to the right
             e.Graphics.DrawString(Math.Round((ParticleArray(i).Bearing * (180 / Math.PI)), 1, MidpointRounding.AwayFromZero).ToString + "°", New Font("Tahoma", 7), Brushes.Red, New Point((ParticleArray(i).XCoord + (ParticleArray(i).Size / 2) - 9), (ParticleArray(i).YCoord + (ParticleArray(i).Size + 20))))
             e.Graphics.DrawString(i.ToString, New Font("Tahoma", 10), Brushes.Blue, New Point((ParticleArray(i).XCoord + (ParticleArray(i).Size / 2) - 9), (ParticleArray(i).YCoord + (ParticleArray(i).Size))))
@@ -98,6 +106,9 @@
                         'Finds the centre points of each particles instead of the top left corner (default)
                         Dim CentrePointParticleI() As Integer = {(ParticleArray(i).XCoord + (ParticleArray(i).Size / 2)), ParticleArray(i).YCoord + (ParticleArray(i).Size / 2)}
                         Dim CentrePointParticleJ() As Integer = {(ParticleArray(j).XCoord + (ParticleArray(j).Size / 2)), ParticleArray(j).YCoord + (ParticleArray(j).Size / 2)}
+
+                        e.Graphics.DrawString("i", New Font("Tahoma", 10), Brushes.Blue, New Point((ParticleArray(i).XCoord + (ParticleArray(i).Size / 2)), (ParticleArray(i).YCoord + (ParticleArray(i).Size))))
+                        e.Graphics.DrawString("j", New Font("Tahoma", 10), Brushes.Blue, New Point((ParticleArray(j).XCoord + (ParticleArray(j).Size / 2)), (ParticleArray(j).YCoord + (ParticleArray(j).Size))))
 
                         'Finds the point of collision between the two particles
                         Dim midpointX As Integer = ((CentrePointParticleI(0) + CentrePointParticleJ(0)) / 2)
@@ -137,8 +148,8 @@
                         Dim YVectorJ As Double = Math.Sin(ParticleArray(j).Bearing) * ParticleArray(j).Velocity
 
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                        Dim PWallXPerpendicularI = PWallYVector
-                        Dim PWallYPerpendicularI = -PWallXVector
+                        Dim PWallXPerpendicularI = -PWallYVector
+                        Dim PWallYPerpendicularI = PWallXVector
 
                         Dim NewXVectorI As Double = XVectorI - (2 * ((XVectorI * PWallXPerpendicularI) + (YVectorI * PWallYPerpendicularI)) * PWallXPerpendicularI)
                         Dim NewYVectorI As Double = YVectorI - (2 * ((XVectorI * PWallXPerpendicularI) + (YVectorI * PWallYPerpendicularI)) * PWallYPerpendicularI)
@@ -159,18 +170,10 @@
                             ParticleArray(i).Bearing += Math.PI
                         End If
 
-                        ParticleArray(i).XCoord += NewXVectorI
-                        ParticleArray(i).YCoord += NewYVectorI
-                        ParticleArray(i).XCoord += NewXVectorI
-                        ParticleArray(i).YCoord += NewYVectorI
-                        ParticleArray(i).XCoord += NewXVectorI
-                        ParticleArray(i).YCoord += NewYVectorI
-                        ParticleArray(i).XCoord += NewXVectorI
-                        ParticleArray(i).YCoord += NewYVectorI
 
                         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                        Dim PWallXPerpendicularJ = -PWallYVector
-                        Dim PWallYPerpendicularJ = PWallXVector
+                        Dim PWallXPerpendicularJ = PWallYVector
+                        Dim PWallYPerpendicularJ = -PWallXVector
 
                         Dim NewXVectorJ As Double = XVectorJ - (2 * ((XVectorJ * PWallXPerpendicularJ) + (YVectorJ * PWallYPerpendicularJ)) * PWallXPerpendicularJ)
                         Dim NewYVectorJ As Double = YVectorJ - (2 * ((XVectorJ * PWallXPerpendicularJ) + (YVectorJ * PWallYPerpendicularJ)) * PWallYPerpendicularJ)
@@ -191,14 +194,7 @@
                             ParticleArray(j).Bearing += Math.PI
                         End If
 
-                        ParticleArray(j).XCoord += NewXVectorJ
-                        ParticleArray(j).YCoord += NewYVectorJ
-                        ParticleArray(j).XCoord += NewXVectorJ
-                        ParticleArray(j).YCoord += NewYVectorJ
-                        ParticleArray(j).XCoord += NewXVectorJ
-                        ParticleArray(j).YCoord += NewYVectorJ
-                        ParticleArray(j).XCoord += NewXVectorJ
-                        ParticleArray(j).YCoord += NewYVectorJ
+
 
                     End If
                 Next
@@ -226,6 +222,7 @@
     'End Function
 
     Private Sub PauseButton_Click(sender As Object, e As EventArgs) Handles PauseButton.Click
+        counter = -1
 
         'Pauses the timer and therefore the simulation when the button is pressed
         If Timer1.Enabled = True Then
@@ -242,4 +239,9 @@
 
     End Sub
 
+    Private Sub FrameButton_Click(sender As Object, e As EventArgs) Handles FrameButton.Click
+        PauseButton.Text = "Resume"
+        Timer1.Enabled = True
+        counter = 1
+    End Sub
 End Class
