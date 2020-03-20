@@ -137,6 +137,7 @@
                         'Dim pwallbearing As Double = (((ParticleArray(i).Bearing * (180 / Math.PI)) * ParticleArray(i).Velocity) + ((ParticleArray(j).Bearing * (180 / Math.PI)) * ParticleArray(j).Velocity) / (ParticleArray(j).Velocity + ParticleArray(i).Velocity))
                         Dim pwallbearing As Double = (((ParticleArray(i).Bearing) * ParticleArray(i).Velocity) + ((ParticleArray(j).Bearing) * ParticleArray(j).Velocity) / (ParticleArray(j).Velocity + ParticleArray(i).Velocity))
 
+                        'Sets the vector for the pseudowall to reflect around
                         Dim PWallXVector As Double = Math.Cos(pwallbearing)
                         Dim PWallYVector As Double = Math.Sin(pwallbearing)
 
